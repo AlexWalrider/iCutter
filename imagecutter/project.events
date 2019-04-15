@@ -1,0 +1,45 @@
+a:1:{s:5:"form1";a:6:{s:7:"button1";a:1:{s:11:"onmousedown";s:53:"c("timer1")->enable = true;
+c("label6")->text = "0";";}s:7:"button4";a:1:{s:11:"onmousedown";s:76:"$path = c("dirDlg1")->execute();
+c("edit5")->text = c("dirDlg1")->fileName;";}s:6:"cutter";a:1:{s:9:"onexecute";s:984:"$filea = c("edit1")->text;
+$patter = c("edit2")->text;
+$outer = c("edit5")->text;
+$file = "$patter\\$filea";
+$w = c("edit3")->text;
+$h = c("edit4")->text;
+$outputter = c("edit5")->text;
+$crop = c("checkbox1")->checked;
+
+    list($width, $height) = getimagesize($file);
+    $r = $width / $height;
+
+    if ($crop) {
+        if ($width > $height) {
+            $width = ceil($width-($width*abs($r-$w/$h)));
+        } else {
+            $height = ceil($height-($height*abs($r-$w/$h)));
+        }
+        $newwidth = $w;
+        $newheight = $h;
+    } else {
+        if ($w/$h > $r) {
+            $newwidth = $h*$r;
+            $newheight = $h;
+        } else {
+            $newheight = $w/$r;
+            $newwidth = $w;
+        }
+    }
+    $src = imagecreatefromjpeg($file);
+    $dst = imagecreatetruecolor($newwidth, $newheight);
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+imagejpeg($dst, "$outer\\$filea");";}s:7:"button3";a:1:{s:11:"onmousedown";s:76:"$path = c("dirDlg1")->execute();
+c("edit2")->text = c("dirDlg1")->fileName;";}s:6:"timer1";a:1:{s:7:"ontimer";s:306:"$dir = c("edit2")->text;
+$exter = c("combobox1")->inText;
+$label = c("label6")->text;
+dir_search($dir, $array, ".$exter", false, false);
+c("edit1")->text = $array[$label];
+cutter();
+$resulta = sizeof($array);
+if ($label == $resulta) c("timer1")->enable = false;
+else c("label6")->text = $label + 1;";}s:8:"--fmedit";a:1:{s:6:"onshow";s:0:"";}}}
